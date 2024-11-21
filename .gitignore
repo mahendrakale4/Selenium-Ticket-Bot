@@ -6,3 +6,8 @@ node_modules/
 
 # dotenv environment variables file
 .env
+
+# few more files
+co.json
+lr.json
+no.json
