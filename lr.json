@@ -1,0 +1,66 @@
+const { Builder, By, until } = require('selenium-webdriver');
+const tickets = require('./no.json');
+
+const username = 'firstname1.lastname';
+const password = 'your ID password';
+
+async function clickButton(driver, xpath) {
+    while (true) {
+        try {
+            const button = await driver.findElement(By.xpath(xpath));
+            await driver.executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", button);
+            await driver.wait(until.elementIsVisible(button), 10000);
+            await driver.wait(until.elementIsEnabled(button), 10000);
+            await button.click();
+            return;
+        } catch {
+            await driver.sleep(500);
+        }
+    }
+}
+
+async function processTicket(driver, ticket) {
+    if (!ticket["Case No"]) return;
+    await driver.findElement(By.id('caseNoQ')).clear().sendKeys(ticket["Case No"]);
+    await driver.findElement(By.xpath("//button[text()='View Cases']")).click();
+    await driver.wait(until.elementLocated(By.css('.query-list-table table')), 20000);
+
+    try {
+        const caseRow = await driver.findElement(By.xpath(`//a[contains(text(), '${ticket["Case No"]}')]/ancestor::tr`));
+        if (await caseRow.findElement(By.xpath('.//td[7]')).getText() === 'Assigned to State Resolver') {
+            await caseRow.findElement(By.xpath('.//td[1]/a')).click();
+            const [mainWindow, popupWindow] = await driver.getAllWindowHandles();
+            await driver.switchTo().window(popupWindow);
+            await clickButton(driver, "//input[@class='btn btn-primary btnAssignToMe']");
+            await driver.close();
+            await driver.switchTo().window(mainWindow);
+        }
+    } catch (error) {
+        console.log(`Error processing ticket ${ticket["Case No"]}: ${error.message}`);
+    }
+}
+
+async function main() {
+    let driver = await new Builder().forBrowser('chrome').build();
+    try {
+        await driver.get('https://jiocentral.jioconnect.com');
+        await driver.wait(until.elementLocated(By.name('username')), 10000);
+        await driver.findElement(By.name('username')).sendKeys(username);
+        await driver.findElement(By.name('password')).sendKeys(password);
+        await driver.findElement(By.css('input[type="submit"]')).click();
+        await driver.get('https://jiocentral.jioconnect.com/qsys');
+        await driver.wait(until.elementLocated(By.css('.query-list-table')), 20000);
+
+        await driver.findElement(By.id('asQ')).click();
+        await driver.findElement(By.css('#asQ option[value="3"]')).click();
+        await driver.wait(until.elementLocated(By.css('.query-list-table tbody tr')), 2000);
+
+        for (let ticket of tickets) await processTicket(driver, ticket);
+    } catch (error) {
+        console.log(`Error: ${error.message}`);
+    } finally {
+        await driver.quit();
+    }
+}
+
+main();
