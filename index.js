@@ -199,12 +199,8 @@ async function main() {
                             await commentInput.sendKeys(ticket["Case Resolution Comments"]);
 
 
-                            await driver.sleep(3000);
+                            await driver.sleep(1000);
 
-
-                            // Wait for the page to load and close the current tab
-                            // await driver.wait(until.elementLocated(By.xpath("//button[contains(text(),'Save')]")), 15000);
-                            // console.log('Page loaded after clicking Resolve.');
 
                             let saveButton = await driver.wait(until.elementLocated(By.xpath("//button[contains(text(),'Save')]")), 15000);
                             await saveButton.click();
@@ -267,7 +263,7 @@ async function main() {
                             console.log('Page loaded after clicking Resolve.');
 
                             // Optionally, you can add a small sleep before clicking the "Save" button if needed
-                            await driver.sleep(1500); // Optional wait for a bit before clicking the button
+                            await driver.sleep(1000); // Optional wait for a bit before clicking the button
 
                             // Now, click the Save button using its ID
                             let saveButton = await driver.findElement(By.id("rvSaveBtn"));

@@ -1,7 +1,11 @@
+
+// const username = 'Yash.Dhawane';
+// const password = 'Ticket@10';
 const username = 'Mahendra1.kale';
 const password = 'Shamrao@84';
 
 const { Builder, By, until } = require('selenium-webdriver');
+// const tickets = require('./lr.json');
 const tickets = require('./no.json');
 
 async function scrollIntoView(driver, element) {
