@@ -298,3 +298,61 @@ async function main() {
 }
 
 main();
+
+// main.js
+// ├── Import Dependencies
+// │   ├── Builder from selenium - webdriver
+// │   ├── By from selenium - webdriver
+// │   └── until from selenium - webdriver
+// │
+// ├── tickets(JSON Data)
+// │   └── tickets = require('./no.json')
+// │
+// ├── main function (async)
+// │   ├── Create WebDriver instance(driver)
+// │   ├── Log in to the website
+// │   │   ├── Navigate to the login page
+// │   │   ├── Wait for username field
+// │   │   ├── Enter credentials
+// │   │   └── Click the submit button
+// │   │
+// │   ├── Navigate to QSYS page
+// │   │   ├── Wait for query list table
+// │   │   └── Log message "Navigated to the QSYS page."
+// │   │
+// │   ├── Switch to "All Available Cases"
+// │   │   ├── Click dropdown for case types
+// │   │   ├── Select "All Available Cases" option
+// │   │   └── Log message on successful selection
+// │   │
+// │   ├── Loop through each ticket in the JSON data
+// │   │   └── For each ticket with a "Case No":
+// │   │       ├── Wait for and clear the case number input field
+// │   │       ├── Enter the Case No
+// │   │       ├── Click the "View Cases" button
+// │   │       ├── Wait for table to load with results
+// │   │       └── Search for case row matching Case No
+// │   │           ├── Check assignment status
+// │   │           └── If unresolved, open the case in a new tab
+// │   │               ├── Switch to the new tab
+// │   │               ├── Define helper functions for interaction
+// │   │               │   ├── clickButtonWhenAvailable(click buttons when available)
+// │   │               │   ├── scrollIntoView(scroll element into view)
+// │   │               │   └── clickButtonWhenAvailableDown(click buttons with retry)
+// │   │               ├── Check "Assign To Me" or "Resolve" button
+// │   │               ├── If "Assign To Me" button clicked
+// │   │               │   ├── Close the tab and switch back to the original tab
+// │   │               │   ├── Open the case again in a new tab
+// │   │               │   └── Resolve the case with details from JSON
+// │   │               ├── If "Resolve" button directly available
+// │   │               │   ├── Resolve the case with details from JSON
+// │   │               │   ├── Wait for modal to load
+// │   │               │   ├── Fill form with category, case resolution, and comment
+// │   │               │   ├── Click Save button
+// │   │               │   └── Close the tab after saving
+// │   │               └── Handle errors in case processing
+// │   │
+// │   └── Error Handling and Cleanup
+// │       ├── Log any errors during the script execution
+// │       └── Quit the driver after execution
+// └── End of main function
