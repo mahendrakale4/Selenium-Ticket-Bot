@@ -13,13 +13,13 @@ async function main() {
         await driver.get('https://jiocentral.jioconnect.com');
         await driver.wait(until.elementLocated(By.name('username')), 10000);
         await driver.findElement(By.name('username')).sendKeys('Mahendra1.kale');
-        await driver.findElement(By.name('password')).sendKeys('Shamrao@84');
+        await driver.findElement(By.name('password')).sendKeys('');
         // await driver.findElement(By.name('username')).sendKeys('Yash.Dhawane');
-        // await driver.findElement(By.name('password')).sendKeys('Ticket@10');
+        // await driver.findElement(By.name('password')).sendKeys('');
         // await driver.findElement(By.name('username')).sendKeys('Sushant.Yelurkar');
-        // await driver.findElement(By.name('password')).sendKeys('Sush12#$%^');
+        // await driver.findElement(By.name('password')).sendKeys('');
         // await driver.findElement(By.name('username')).sendKeys('Adarsh10.Pandey');
-        // await driver.findElement(By.name('password')).sendKeys('#Aldebaran@106#');
+        // await driver.findElement(By.name('password')).sendKeys(');
         await driver.findElement(By.css('input[type="submit"]')).click();
         console.log('Logged in successfully.');
 
